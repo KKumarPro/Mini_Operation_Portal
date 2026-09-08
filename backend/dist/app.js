@@ -10,6 +10,7 @@ const notFound_1 = require("./middlewares/notFound");
 const errorHandler_1 = require("./middlewares/errorHandler");
 const customer_routes_1 = __importDefault(require("./customers/customer.routes"));
 const product_routes_1 = __importDefault(require("./products/product.routes"));
+const challan_routes_1 = __importDefault(require("./challans/challan.routes"));
 const app = (0, express_1.default)();
 // Global middleware
 app.use((0, cors_1.default)());
@@ -25,6 +26,7 @@ app.get("/api/health", (_req, res) => {
 app.use("/api/auth", auth_routes_1.default);
 app.use("/api/customers", customer_routes_1.default);
 app.use("/api/products", product_routes_1.default);
+app.use("/api/challans", challan_routes_1.default);
 // 404 handler
 app.use(notFound_1.notFound);
 // Global error handler
