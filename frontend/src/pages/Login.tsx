@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
 export default function Login() {
-  const [email, setEmail] = useState("admin@mini-erp.com");
-  const [password, setPassword] = useState("Admin@123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
