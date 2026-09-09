@@ -10,11 +10,9 @@ import challanRoutes from "./challans/challan.routes";
 
 const app = express();
 
-// Global middleware
 app.use(cors());
 app.use(express.json());
 
-// Health check
 app.get("/api/health", (_req, res) => {
   res.status(200).json({
     success: true,
@@ -22,16 +20,12 @@ app.get("/api/health", (_req, res) => {
   });
 });
 
-// Authentication routes
 app.use("/api/auth", authRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/challans", challanRoutes);
 
-// 404 handler
 app.use(notFound);
-
-// Global error handler
 app.use(errorHandler);
 
 export default app;

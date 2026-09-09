@@ -47,10 +47,7 @@ export const createChallan = async (
   for (const item of items) {
     const product = productMap.get(item.productId)!;
 
-    if (
-      status === "CONFIRMED" &&
-      product.currentStock < item.quantity
-    ) {
+    if (status === "CONFIRMED" && product.currentStock < item.quantity) {
       throw new AppError(
         `Insufficient stock for ${product.name}. Available stock: ${product.currentStock}`,
         400
@@ -104,10 +101,7 @@ export const createChallan = async (
         });
 
         if (updated.count !== 1) {
-          throw new AppError(
-            `Insufficient stock for ${product.name}`,
-            400
-          );
+          throw new AppError(`Insufficient stock for ${product.name}`, 400);
         }
 
         await tx.stockMovement.create({
@@ -132,16 +126,63 @@ export const createChallan = async (
   });
 };
 
-export const getChallans = async () => {
-  return prisma.challan.findMany({
-    include: {
-      customer: true,
-      items: true,
+export const getChallans = async (
+  page: number,
+  limit: number,
+  status?: "DRAFT" | "CONFIRMED" | "CANCELLED",
+  search?: string
+) => {
+  const skip = (page - 1) * limit;
+
+  const where: Record<string, unknown> = {};
+
+  if (status) {
+    where.status = status;
+  }
+
+  if (search) {
+    where.OR = [
+      { challanNumber: { contains: search, mode: "insensitive" as const } },
+      {
+        customer: {
+          is: {
+            businessName: { contains: search, mode: "insensitive" as const },
+          },
+        },
+      },
+      {
+        customer: {
+          is: { name: { contains: search, mode: "insensitive" as const } },
+        },
+      },
+    ];
+  }
+
+  const [challans, total] = await Promise.all([
+    prisma.challan.findMany({
+      where,
+      skip,
+      take: limit,
+      include: {
+        customer: true,
+        items: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    }),
+    prisma.challan.count({ where }),
+  ]);
+
+  return {
+    challans,
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit) || 1,
     },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  };
 };
 
 export const getChallanById = async (id: string) => {
@@ -201,10 +242,7 @@ export const updateChallanStatus = async (
       });
 
       if (updated.count !== 1) {
-        throw new AppError(
-          `Insufficient stock for ${item.productName}`,
-          400
-        );
+        throw new AppError(`Insufficient stock for ${item.productName}`, 400);
       }
 
       await tx.stockMovement.create({

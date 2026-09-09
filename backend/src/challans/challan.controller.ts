@@ -44,16 +44,29 @@ export const createChallanController = async (
 };
 
 export const getChallansController = async (
-  _req: AuthenticatedRequest,
+  req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const challans = await getChallans();
+    const page = Math.max(Number(req.query.page) || 1, 1);
+    const limit = Math.min(Math.max(Number(req.query.limit) || 10, 1), 100);
+
+    const status =
+      typeof req.query.status === "string" && req.query.status.length > 0
+        ? (req.query.status as "DRAFT" | "CONFIRMED" | "CANCELLED")
+        : undefined;
+
+    const search =
+      typeof req.query.search === "string"
+        ? req.query.search.trim()
+        : undefined;
+
+    const result = await getChallans(page, limit, status, search);
 
     res.status(200).json({
       success: true,
-      data: challans,
+      data: result,
     });
   } catch (error) {
     next(error);

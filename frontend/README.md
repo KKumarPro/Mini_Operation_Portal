@@ -1,78 +1,33 @@
-# Mini ERP + CRM Operations Portal
+# Mini ERP + CRM — Frontend
 
-A role-based ERP + CRM web application built for managing customers, products, warehouse inventory, and sales challans.
+React + TypeScript + Vite admin UI for the Mini ERP/CRM Operations Portal.
 
-## Tech Stack
+See the [root README](../README.md) for full setup, environment variable, and deployment instructions.
 
-### Frontend
-- React
-- TypeScript
-- Vite
-- Axios
-- React Router
+## Quick start
 
-### Backend
-- Node.js
-- Express
-- TypeScript
-- Prisma ORM
-- JWT Authentication
-- Zod Validation
-- bcryptjs
+```bash
+npm install
+cp .env.example .env
+npm run dev
+```
 
-### Database
-- PostgreSQL
-- Neon PostgreSQL
+The app runs at `http://localhost:5173` and expects the backend API at the URL set in `VITE_API_BASE_URL`.
 
-## Core Modules
+## Scripts
 
-### Authentication & Roles
-The application supports:
-- Admin
-- Sales
-- Warehouse
-- Accounts
+- `npm run dev` — start the Vite dev server
+- `npm run build` — type-check and build for production
+- `npm run preview` — preview the production build locally
+- `npm run lint` — run oxlint
 
-JWT-based authentication is used for protected APIs.
+## Structure
 
-### Customer CRM
-- Add customer
-- Edit customer
-- Search customers
-- Customer details
-- Customer type
-- Customer status
-- Follow-up date
-- Follow-up notes
-
-### Product & Inventory
-- Product management
-- SKU
-- Category
-- Unit price
-- Current stock
-- Minimum stock alert
-- Warehouse location
-- Stock IN
-- Stock OUT
-- Stock movement history
-- Negative stock prevention
-
-### Sales Challans
-- Create challans
-- Draft / Confirmed / Cancelled status
-- Automatic challan number
-- Multiple products and quantities
-- Product snapshot
-- Automatic stock deduction on confirmation
-- Insufficient stock validation
-
-## Project Structure
-
-```text
-Mini_Operation_Portal/
-├── backend/
-│   ├── prisma/
-│   └── src/
-└── frontend/
-    └── src/
+```
+src/
+├── components/   Layout, route guard, modal, status badge
+├── pages/        Login, Dashboard, Customers, Customer detail, Products, Challans
+├── services/     Axios API client
+├── App.tsx       Route definitions
+└── main.tsx      App entry point
+```

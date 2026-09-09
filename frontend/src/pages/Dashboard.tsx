@@ -5,16 +5,22 @@ export default function Dashboard() {
   const [customers, setCustomers] = useState(0);
   const [products, setProducts] = useState(0);
   const [challans, setChallans] = useState(0);
+  const [lowStock, setLowStock] = useState(0);
 
   useEffect(() => {
     Promise.all([
-      api.get("/customers"),
-      api.get("/products"),
-      api.get("/challans"),
+      api.get("/customers?limit=1"),
+      api.get("/products?limit=100"),
+      api.get("/challans?limit=1"),
     ]).then(([c, p, s]) => {
       setCustomers(c.data.data.pagination.total);
       setProducts(p.data.data.pagination.total);
-      setChallans(s.data.data.length);
+      setChallans(s.data.data.pagination.total);
+      setLowStock(
+        p.data.data.products.filter(
+          (product: any) => product.currentStock <= product.minStockAlert
+        ).length
+      );
     });
   }, []);
 
@@ -41,6 +47,13 @@ export default function Dashboard() {
         <div className="stat-card">
           <span>Sales Challans</span>
           <strong>{challans}</strong>
+        </div>
+
+        <div className="stat-card">
+          <span>Low Stock Alerts</span>
+          <strong className={lowStock > 0 ? "low-stock" : ""}>
+            {lowStock}
+          </strong>
         </div>
       </div>
     </div>
