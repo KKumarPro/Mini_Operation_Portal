@@ -1,32 +1,78 @@
-# React + TypeScript + Vite
+# Mini ERP + CRM Operations Portal
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A role-based ERP + CRM web application built for managing customers, products, warehouse inventory, and sales challans.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Frontend
+- React
+- TypeScript
+- Vite
+- Axios
+- React Router
 
-## React Compiler
+### Backend
+- Node.js
+- Express
+- TypeScript
+- Prisma ORM
+- JWT Authentication
+- Zod Validation
+- bcryptjs
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Database
+- PostgreSQL
+- Neon PostgreSQL
 
-## Expanding the Oxlint configuration
+## Core Modules
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+### Authentication & Roles
+The application supports:
+- Admin
+- Sales
+- Warehouse
+- Accounts
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+JWT-based authentication is used for protected APIs.
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### Customer CRM
+- Add customer
+- Edit customer
+- Search customers
+- Customer details
+- Customer type
+- Customer status
+- Follow-up date
+- Follow-up notes
+
+### Product & Inventory
+- Product management
+- SKU
+- Category
+- Unit price
+- Current stock
+- Minimum stock alert
+- Warehouse location
+- Stock IN
+- Stock OUT
+- Stock movement history
+- Negative stock prevention
+
+### Sales Challans
+- Create challans
+- Draft / Confirmed / Cancelled status
+- Automatic challan number
+- Multiple products and quantities
+- Product snapshot
+- Automatic stock deduction on confirmation
+- Insufficient stock validation
+
+## Project Structure
+
+```text
+Mini_Operation_Portal/
+├── backend/
+│   ├── prisma/
+│   └── src/
+└── frontend/
+    └── src/
